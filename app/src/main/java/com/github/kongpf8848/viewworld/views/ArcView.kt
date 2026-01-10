@@ -1,7 +1,13 @@
 package com.github.kongpf8848.viewworld.views
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.LinearGradient
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Rect
+import android.graphics.Shader
 import android.util.AttributeSet
 import android.view.View
 import com.github.kongpf8848.viewworld.R
@@ -42,9 +48,17 @@ class ArcView @JvmOverloads constructor(
 
     override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
         super.onSizeChanged(w, h, oldw, oldh)
-        mWidth=w
-        mHeight=h
-        linearGradient = LinearGradient(0f, 0f, mWidth.toFloat(), 0f, mStartColor, mEndColor, Shader.TileMode.CLAMP)
+        mWidth = w
+        mHeight = h
+        linearGradient = LinearGradient(
+            0f,
+            0f,
+            mWidth.toFloat(),
+            0f,
+            mStartColor,
+            mEndColor,
+            Shader.TileMode.CLAMP
+        )
         mPaint.shader = linearGradient
     }
 
@@ -57,8 +71,14 @@ class ArcView @JvmOverloads constructor(
 
         //绘制圆弧
         path.moveTo(0f, (mHeight - mArcHeight).toFloat())
-        path.quadTo((mWidth shr 1).toFloat(), mHeight.toFloat(), mWidth.toFloat(), (mHeight - mArcHeight).toFloat())
+        path.quadTo(
+            (mWidth shr 1).toFloat(),
+            mHeight.toFloat(),
+            mWidth.toFloat(),
+            (mHeight - mArcHeight).toFloat()
+        )
         canvas.drawPath(path, mPaint)
+
 
     }
 

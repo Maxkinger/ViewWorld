@@ -96,6 +96,14 @@
             app:tabTextColor="#999999"
             app:tabUnSelectedTextSize="14sp" />
 
+        <com.github.kongpf8848.viewworld.views.BottomLineView
+            android:id="@+id/bottom_indicator"
+            android:layout_width="40dp"
+            android:layout_height="4dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center_horizontal" />
+
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/view_pager"
             android:layout_width="match_parent"

@@ -2,11 +2,13 @@ package com.github.kongpf8848.viewworld.activity
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.github.kongpf8848.viewworld.R
@@ -66,7 +68,7 @@ class SelectAvatarActivity : BaseActivity<ActivityAvatarBinding>() {
         })
 
         binding.rvImage.layoutManager =
-            GridLayoutManager(this, 5, GridLayoutManager.VERTICAL, false)
+            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         binding.rvImage.adapter = ImageAdapter(object : OnClickListener {
             override fun onItemClick(position: Int) {
                 if (imageIndex != position) {
@@ -80,6 +82,30 @@ class SelectAvatarActivity : BaseActivity<ActivityAvatarBinding>() {
                 }
             }
         })
+
+        // 1. 设置指示器宽度
+        binding.bottomIndicator.setIndicatorWidth(40f)
+        binding.rvImage.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                // 获取滚动参数
+                val offset = recyclerView.computeHorizontalScrollOffset() // 当前偏移
+                val range = recyclerView.computeHorizontalScrollRange()   // 内容总宽
+                val extent = recyclerView.computeHorizontalScrollExtent() // 可见宽度
+
+                Log.d(
+                    TAG,
+                    "onScrolled() called with: offset = $offset, range = $range, extent = $extent"
+                )
+                // 计算最大可滚动距离
+                val maxScroll = range - extent
+
+                if (maxScroll > 0) {
+                    val ratio = offset.toFloat() / maxScroll
+                    binding.bottomIndicator.updateScrollRatio(ratio)
+                }
+            }
+        })
+
     }
 
     interface OnClickListener {

@@ -1,7 +1,9 @@
 package com.github.kongpf8848.viewworld.activity
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
+import androidx.viewpager.widget.ViewPager
 import com.github.kongpf8848.androidworld.adapter.FragmentAdapter
 import com.github.kongpf8848.viewworld.R
 import com.github.kongpf8848.viewworld.base.BaseActivity
@@ -35,6 +37,45 @@ class TabLayoutActivity : BaseActivity<ActivityTabLayoutBinding>() {
         binding.tabLayout1.setupWithViewPager(binding.viewPager)
         binding.tabLayout2.setupWithViewPager(binding.viewPager)
         binding.tabLayout3.setupWithViewPager(binding.viewPager)
+        binding.viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+                Log.d(
+                    TAG,
+                    "onPageScrolled() called with: position = $position, positionOffset = $positionOffset, positionOffsetPixels = $positionOffsetPixels"
+                )
+                val itemCount = binding.viewPager.adapter!!.count
+                if (itemCount > 1) {
+                    // 计算总进度
+                    // 当前页索引 + 当前页偏移百分比
+                    val currentProgress = position + positionOffset
+
+                    // 总的可移动页数 = 总页数 - 1
+                    val totalProgress = (itemCount - 1).toFloat()
+
+                    val ratio = currentProgress / totalProgress
+
+                    Log.d(
+                        TAG,
+                        "onPageScrolled() called with: ratio = $ratio"
+                    )
+                    binding.bottomIndicator.updateScrollRatio(ratio)
+                }
+
+            }
+
+            override fun onPageSelected(position: Int) {
+
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {
+
+            }
+
+        })
 
     }
 }
